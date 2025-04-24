@@ -46,7 +46,8 @@
 
         /* --- Base & Reset --- */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; }
+        /* 중력 스크롤 시 부드러움을 위해 html scroll-behavior 제거 또는 auto로 변경 */
+        html { scroll-behavior: auto; }
         body {
             font-family: 'Poppins', 'Segoe UI', 'Malgun Gothic', 'Apple SD Gothic Neo', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
             background-color: var(--background-color);
@@ -61,34 +62,18 @@
 
         /* --- Preloader --- */
         #preloader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--background-color);
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 1;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--background-color); z-index: 9999; display: flex;
+            justify-content: center; align-items: center; opacity: 1;
             transition: opacity var(--transition-speed-medium) ease-out;
         }
-        #preloader.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
+        #preloader.hidden { opacity: 0; pointer-events: none; }
         .spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid var(--card-border-color);
-            border-top-color: var(--accent-color);
-            border-radius: 50%;
+            width: 50px; height: 50px; border: 5px solid var(--card-border-color);
+            border-top-color: var(--accent-color); border-radius: 50%;
             animation: spin 1s linear infinite;
         }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         /* --- Background Spheres --- */
         .sphere { position: fixed; border-radius: 50%; filter: blur(80px); z-index: -1; opacity: 0.6; animation: float 20s infinite ease-in-out alternate; }
@@ -104,179 +89,79 @@
 
         /* --- Glass Effect Card --- */
         .glass-section {
-            background: var(--card-background);
-            backdrop-filter: blur(var(--blur-intensity));
-            -webkit-backdrop-filter: blur(var(--blur-intensity));
-            border: 1px solid var(--card-border-color);
-            border-radius: var(--card-border-radius);
-            margin-bottom: 40px;
-            padding: 40px;
+            background: var(--card-background); backdrop-filter: blur(var(--blur-intensity));
+            -webkit-backdrop-filter: blur(var(--blur-intensity)); border: 1px solid var(--card-border-color);
+            border-radius: var(--card-border-radius); margin-bottom: 40px; padding: 40px;
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
             transition: background-color var(--transition-speed-medium) ease, box-shadow var(--transition-speed-medium) ease;
         }
-        .glass-section:hover {
-             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-        }
+        .glass-section:hover { box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3); }
 
-        /* --- Header (MODIFIED: Logo Only, Centered & Enlarged) --- */
+        /* --- Header --- */
         .main-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 100;
-            padding: 15px 0; /* Adjusted padding */
-            background: rgba(5, 5, 16, 0.6);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--card-border-color);
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 100; padding: 15px 0;
+            background: rgba(5, 5, 16, 0.6); backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--card-border-color);
             transition: background-color var(--transition-speed-medium) ease;
         }
-        .main-header .container {
-            display: flex;
-            justify-content: center; /* Center the logo */
-            align-items: center;
-        }
-        .logo {
-            display: inline-block; /* Needed for sizing */
-            transition: transform var(--transition-speed-fast) ease;
-        }
-        .logo:hover {
-            transform: scale(1.05);
-        }
-        .logo-img {
-            height: 70px; /* Enlarged logo height */
-            width: auto;
-            max-width: 100%; /* Prevent overflow */
-            display: block; /* Remove potential bottom space */
-        }
+        .main-header .container { display: flex; justify-content: center; align-items: center; }
+        .logo { display: inline-block; transition: transform var(--transition-speed-fast) ease; }
+        .logo:hover { transform: scale(1.05); }
+        .logo-img { height: 70px; width: auto; max-width: 100%; display: block; }
 
         /* --- Hero Section --- */
         #hero {
-            min-height: 85vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding-top: 120px; /* Adjust if header height changes significantly */
-            background: none;
-            border: none;
-            box-shadow: none;
-            margin-bottom: 0;
-            position: relative;
+            min-height: 85vh; display: flex; align-items: center; justify-content: center;
+            text-align: center; padding-top: 120px; background: none; border: none;
+            box-shadow: none; margin-bottom: 0; position: relative;
         }
-
-        /* Hero Section Content Styling */
         #hero .hero-content {
-            max-width: 750px;
-            background: rgba(10, 10, 30, 0.55);
-            backdrop-filter: blur(20px) saturate(150%);
-            -webkit-backdrop-filter: blur(20px) saturate(150%);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 25px;
-            padding: 60px 50px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3),
-                        inset 0 0 1px 1px rgba(255, 255, 255, 0.08);
-            position: relative;
-            z-index: 1;
+            max-width: 750px; background: rgba(10, 10, 30, 0.55);
+            backdrop-filter: blur(20px) saturate(150%); -webkit-backdrop-filter: blur(20px) saturate(150%);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 25px; padding: 60px 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), inset 0 0 1px 1px rgba(255, 255, 255, 0.08);
+            position: relative; z-index: 1;
             transition: transform var(--transition-speed-medium) ease, box-shadow var(--transition-speed-medium) ease;
-            text-align: center;
-            overflow: hidden;
+            text-align: center; overflow: hidden;
         }
-
-        #hero .hero-content::before { /* Subtle gradient overlay */
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
+        #hero .hero-content::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
             background: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 60%);
-            pointer-events: none;
-            z-index: -1;
-            border-radius: inherit;
+            pointer-events: none; z-index: -1; border-radius: inherit;
         }
-
         #hero .hero-content:hover {
             transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4),
-                        0 0 30px var(--hover-glow-color),
-                        inset 0 0 1px 1px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4), 0 0 30px var(--hover-glow-color), inset 0 0 1px 1px rgba(255, 255, 255, 0.1);
         }
-
-        /* Hero Section Logo Image Styling (Replaces H1) */
         .hero-logo-img {
-            display: block; /* To allow margin auto */
-            height: 230px; /* Adjust size as needed */
-            width: auto;
-            margin: 0 auto 1px auto; /* Center horizontally, add bottom margin */
+            display: block; height: 230px; width: auto; margin: 0 auto 1px auto;
             transition: transform var(--transition-speed-fast) ease;
         }
-        .hero-logo-img:hover {
-             transform: scale(1.03); /* Optional hover effect */
-        }
-
-        /* Catchphrase Styling */
+        .hero-logo-img:hover { transform: scale(1.03); }
         #hero .catchphrase {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.3em;
-            font-weight: 400;
-            margin-bottom: 35px; /* Adjust spacing below logo */
-            color: var(--text-color-secondary);
-            font-style: normal;
-            line-height: 1.5;
-            max-width: 90%;
-            margin-left: auto;
-            margin-right: auto;
+            font-family: 'Poppins', sans-serif; font-size: 1.3em; font-weight: 400;
+            margin-bottom: 35px; color: var(--text-color-secondary); font-style: normal;
+            line-height: 1.5; max-width: 90%; margin-left: auto; margin-right: auto;
         }
+        #hero .catchphrase .highlight { color: var(--accent-color); font-weight: 600; }
+        .keep-together { display: inline-block; vertical-align: baseline; }
 
-        #hero .catchphrase .highlight { /* Highlight group name */
-            color: var(--accent-color);
-            font-weight: 600;
-        }
-        /* Fix for potential wrapping issue in catchphrase */
-        .keep-together {
-            display: inline-block;
-            vertical-align: baseline;
-        }
-
-
-        /* CTA Button Styling */
-        .cta-button { /* General CTA Button Style */
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(90deg, var(--accent-gradient-start), var(--accent-gradient-end));
-            color: #050510;
-            padding: 15px 45px;
-            border: none;
-            border-radius: 50px;
-            font-weight: 600;
-            text-transform: uppercase;
-            cursor: pointer;
+        /* --- CTA Button Styling --- */
+        .cta-button {
+            font-family: 'Poppins', sans-serif; background: linear-gradient(90deg, var(--accent-gradient-start), var(--accent-gradient-end));
+            color: #050510; padding: 15px 45px; border: none; border-radius: 50px;
+            font-weight: 600; text-transform: uppercase; cursor: pointer;
             transition: transform var(--transition-speed-fast) ease, box-shadow var(--transition-speed-fast) ease, background-position var(--transition-speed-medium) ease;
-            font-size: 1em;
-            text-decoration: none;
-            letter-spacing: 1px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background-size: 150% auto;
-            background-position: 0% center;
+            font-size: 1em; text-decoration: none; letter-spacing: 1px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25); display: inline-flex;
+            align-items: center; gap: 8px; background-size: 150% auto; background-position: 0% center;
         }
-
         .cta-button:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 10px 30px var(--hover-glow-color);
-            background-position: 100% center;
-            text-decoration: none;
+            transform: translateY(-5px) scale(1.05); box-shadow: 0 10px 30px var(--hover-glow-color);
+            background-position: 100% center; text-decoration: none;
         }
-
-        .cta-button i {
-            font-size: 0.9em;
-            transition: transform 0.3s ease;
-        }
-
-        .cta-button:hover i {
-            transform: translateX(3px);
-        }
-
+        .cta-button i { font-size: 0.9em; transition: transform 0.3s ease; }
+        .cta-button:hover i { transform: translateX(3px); }
 
         /* --- Section Headers --- */
         .section-header { text-align: center; margin-bottom: 50px; }
@@ -296,17 +181,11 @@
         /* --- Members Section --- */
         .members-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
         .member-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            text-align: center;
+            background: rgba(255, 255, 255, 0.05); border-radius: 15px; text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: transform var(--transition-speed-medium) ease, box-shadow var(--transition-speed-medium) ease, background-color var(--transition-speed-medium) ease;
-            overflow: hidden;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            will-change: transform;
-            transform-style: preserve-3d;
+            overflow: hidden; position: relative; display: flex; flex-direction: column;
+            will-change: transform; transform-style: preserve-3d;
         }
         .member-card:hover {
             transform: translateY(-8px) perspective(1000px);
@@ -324,30 +203,19 @@
 
         /* --- Music Section --- */
         .music-highlight { display: flex; flex-wrap: wrap; align-items: center; gap: 40px; background: rgba(255, 255, 255, 0.05); padding: 30px; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.1); transition: transform var(--transition-speed-medium) ease, box-shadow var(--transition-speed-medium) ease; }
-        .music-highlight:hover {
-             transform: scale(1.02);
-             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
-        }
+        .music-highlight:hover { transform: scale(1.02); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25); }
         .album-art { flex-basis: 220px; flex-shrink: 0; height: 220px; border-radius: 10px; overflow: hidden; transition: transform var(--transition-speed-medium) ease; }
         .music-highlight:hover .album-art { transform: rotate(-3deg) scale(1.05); }
         .album-art img { width: 100%; height: 100%; object-fit: cover; }
         .music-info { flex-grow: 1; }
         .music-info h3 { font-size: 1.8em; margin-bottom: 10px; color: var(--accent-color); font-weight: 600; }
         .music-info p { color: var(--text-color-secondary); margin-bottom: 20px; }
-        #music .cta-button {
-            font-size: 0.9em;
-            padding: 10px 25px;
-        }
-
+        #music .cta-button { font-size: 0.9em; padding: 10px 25px; }
 
         /* --- Activities Section --- */
         .activities-list { list-style: none; padding-left: 0; max-width: 700px; margin: 0 auto; }
         .activities-list li { background: rgba(255, 255, 255, 0.05); padding: 15px 20px; margin-bottom: 15px; border-radius: 8px; border-left: 4px solid var(--accent-color); transition: background-color var(--transition-speed-fast) ease, transform var(--transition-speed-fast) ease, box-shadow var(--transition-speed-fast) ease; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
-        .activities-list li:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateX(8px) scale(1.01);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
+        .activities-list li:hover { background: rgba(255, 255, 255, 0.1); transform: translateX(8px) scale(1.01); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); }
         .activities-list .date { font-weight: bold; color: var(--text-color-primary); flex-shrink: 0; }
         .activities-list .event { color: var(--text-color-secondary); text-align: right; flex-grow: 1; }
         .activities-list .event a { color: var(--accent-color); text-decoration: none; transition: color var(--transition-speed-fast); font-weight: 500; }
@@ -356,15 +224,10 @@
         /* --- Gallery Section --- */
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
         .gallery-item {
-            aspect-ratio: 1 / 1;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            overflow: hidden;
-            transition: transform var(--transition-speed-medium) ease, box-shadow var(--transition-speed-medium) ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-            will-change: transform;
-            transform-style: preserve-3d;
+            aspect-ratio: 1 / 1; background: rgba(255, 255, 255, 0.05); border-radius: 10px;
+            overflow: hidden; transition: transform var(--transition-speed-medium) ease, box-shadow var(--transition-speed-medium) ease;
+            border: 1px solid rgba(255, 255, 255, 0.1); position: relative;
+            will-change: transform; transform-style: preserve-3d;
         }
         .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--transition-speed-medium) ease; }
         .gallery-item:hover {
@@ -388,72 +251,39 @@
         .social-links a i { vertical-align: middle; transition: color var(--transition-speed-fast) ease; }
         .social-links a:hover { color: var(--accent-color); transform: translateY(-4px) scale(1.1); }
         .social-links a:hover i { color: var(--accent-color); }
-        /* Specific icon colors on hover */
         .social-links a[title="Instagram"]:hover i { color: #E1306C; }
         .social-links a[title="X (Twitter)"]:hover i { color: #ffffff; }
         .social-links a[title="TikTok"]:hover i { color: #EE1D52; }
         .social-links a[title="POCKETDOLS"]:hover i { color: #FFD700; }
-        #connect .cta-button {
-             /* Inherits base styles from #hero .cta-button */
-        }
 
         /* --- Footer --- */
         footer { padding: 30px 0; text-align: center; color: var(--text-color-muted); font-size: 0.9em; margin-top: 40px; border-top: 1px solid var(--card-border-color); }
 
         /* --- Scroll Animations --- */
         .reveal {
-            opacity: 0;
-            transform: translateY(40px) scale(0.95);
+            opacity: 0; transform: translateY(40px) scale(0.95);
             transition: opacity var(--transition-speed-slow) ease-out, transform var(--transition-speed-slow) ease-out;
             will-change: opacity, transform;
         }
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
+        .reveal.visible { opacity: 1; transform: translateY(0) scale(1); }
 
         /* --- Tilt Scroll Control --- */
         #tilt-scroll-controls {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1001;
-            background: rgba(15, 15, 60, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            padding: 10px 15px;
-            border-radius: 15px;
-            border: 1px solid var(--card-border-color);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            position: fixed; bottom: 20px; right: 20px; z-index: 1001;
+            background: rgba(15, 15, 60, 0.7); backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); padding: 10px 15px; border-radius: 15px;
+            border: 1px solid var(--card-border-color); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            display: flex; align-items: center; gap: 10px;
         }
         #tilt-scroll-toggle {
-            font-family: 'Poppins', sans-serif;
-            background: var(--accent-color);
-            color: var(--background-color);
-            border: none;
-            padding: 8px 15px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9em;
+            font-family: 'Poppins', sans-serif; background: var(--accent-color);
+            color: var(--background-color); border: none; padding: 8px 15px;
+            border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 0.9em;
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
-        #tilt-scroll-toggle:hover {
-            background-color: var(--accent-gradient-end);
-            transform: scale(1.05);
-        }
-        #tilt-scroll-toggle.active {
-            background-color: #ff6b6b; /* Red when active */
-            color: white;
-        }
-        #tilt-scroll-status {
-            font-size: 0.8em;
-            color: var(--text-color-secondary);
-        }
-
+        #tilt-scroll-toggle:hover { background-color: var(--accent-gradient-end); transform: scale(1.05); }
+        #tilt-scroll-toggle.active { background-color: #ff6b6b; color: white; }
+        #tilt-scroll-status { font-size: 0.8em; color: var(--text-color-secondary); }
 
         /* --- Responsive Design --- */
         @media (max-width: 992px) {
@@ -468,9 +298,9 @@
             .logo-img { height: 60px; }
             #hero { min-height: 75vh; padding-top: 100px; }
             #hero .hero-content { padding: 50px 30px; border-radius: 20px; }
-            .hero-logo-img { height: 175px; margin-bottom: 20px; } /* Adjusted hero logo size */
+            .hero-logo-img { height: 175px; margin-bottom: 20px; }
             #hero .catchphrase { font-size: 1.1em; max-width: 100%; }
-            #hero .cta-button { padding: 12px 35px; font-size: 0.9em; }
+            .cta-button { padding: 12px 35px; font-size: 0.9em; }
             .section-header h2 { font-size: 2em; }
             section { padding: 40px 0; }
             .glass-section { padding: 30px; }
@@ -492,7 +322,7 @@
             .gallery-item:hover img { transform: scale(1.05); }
             #tilt-scroll-controls { bottom: 15px; right: 15px; padding: 8px 12px; }
             #tilt-scroll-toggle { font-size: 0.8em; padding: 6px 12px; }
-            #tilt-scroll-status { display: none; } /* Hide status text on smaller screens */
+            #tilt-scroll-status { display: none; }
         }
         @media (max-width: 480px) {
             body { font-size: 14px; }
@@ -500,9 +330,9 @@
             .logo-img { height: 50px; }
             #hero { min-height: 70vh; padding-top: 80px; }
             #hero .hero-content { padding: 40px 20px; border-radius: 15px; }
-            .hero-logo-img { height: 130px; margin-bottom: 15px; } /* Adjusted hero logo size */
+            .hero-logo-img { height: 130px; margin-bottom: 15px; }
             #hero .catchphrase { font-size: 1em; }
-            #hero .cta-button { padding: 10px 30px; font-size: 0.85em; gap: 5px; }
+            .cta-button { padding: 10px 30px; font-size: 0.85em; gap: 5px; }
             .section-header h2 { font-size: 1.8em; }
             .members-grid { grid-template-columns: 1fr; }
             .member-card { padding: 0; }
@@ -520,16 +350,14 @@
 </head>
 <body>
     <!-- Preloader -->
-    <div id="preloader">
-        <div class="spinner"></div>
-    </div>
+    <div id="preloader"><div class="spinner"></div></div>
 
     <!-- Background Spheres -->
     <div class="sphere sphere-1"></div>
     <div class="sphere sphere-2"></div>
     <div class="sphere sphere-3"></div>
 
-    <!-- Header (Logo Only) -->
+    <!-- Header -->
     <header class="main-header">
         <div class="container">
             <a href="#hero" class="logo">
@@ -545,23 +373,16 @@
             <div class="hero-content reveal">
                 <img src="https://github.com/AnonDev666/Try1_Intropage/raw/refs/heads/main/try1.webp" alt="TRY1 Logo" class="hero-logo-img">
                 <p class="catchphrase">One and One! <span class="keep-together">안녕하세요 <span class="highlight">TRY1</span> 입니다!</span></p>
-                <a href="#about" class="cta-button">
-                    Discover More <i class="fas fa-chevron-right"></i>
-                </a>
+                <a href="#about" class="cta-button">Discover More <i class="fas fa-chevron-right"></i></a>
             </div>
         </section>
 
         <!-- About Section -->
         <section id="about" class="container">
              <div class="glass-section reveal">
-                <div class="section-header">
-                    <h2>TRY1 소개</h2>
-                    <p>VT 엔터테인먼트의 다국적 라이징 스타.</p>
-                </div>
+                <div class="section-header"><h2>TRY1 소개</h2><p>VT 엔터테인먼트의 다국적 라이징 스타.</p></div>
                 <div class="about-content">
-                    <p>
-                        TRY1은 VT 엔터테인먼트 소속의 역동적인 <span class="highlight">7인조 다국적 보이그룹</span>으로, 글로벌 음악 시장에 발자취를 남길 준비가 되어 있습니다. <span class="highlight">한국인 4명</span>과 <span class="highlight">일본인 3명</span>(네오, R1KE, 츠키토)으로 구성되어 독특한 문화와 재능의 조화를 선보입니다.
-                    </p>
+                    <p>TRY1은 VT 엔터테인먼트 소속의 역동적인 <span class="highlight">7인조 다국적 보이그룹</span>으로, 글로벌 음악 시장에 발자취를 남길 준비가 되어 있습니다. <span class="highlight">한국인 4명</span>과 <span class="highlight">일본인 3명</span>(네오, R1KE, 츠키토)으로 구성되어 독특한 문화와 재능의 조화를 선보입니다.</p>
                     <div class="details-grid">
                         <div class="detail-item"><strong>데뷔 예정</strong><span>2025년</span></div>
                         <div class="detail-item"><strong>프리 데뷔 싱글</strong><span>"RE: TRY1" (디지털 싱글)<br>발매일: 2024.10.23</span></div>
@@ -675,23 +496,17 @@
         // --- Preloader ---
         window.addEventListener('load', () => {
             const preloader = document.getElementById('preloader');
-            if (preloader) {
-                preloader.classList.add('hidden');
-            }
+            if (preloader) preloader.classList.add('hidden');
         });
 
         // --- Scroll Reveal Animation ---
         const revealElements = document.querySelectorAll('.reveal');
-        const revealObserver = new IntersectionObserver((entries, observer) => {
+        const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                } else {
-                    entry.target.classList.remove('visible');
-                }
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+                else entry.target.classList.remove('visible');
             });
         }, { threshold: 0.1 });
-
         revealElements.forEach(el => {
             revealObserver.observe(el);
             el.classList.remove('visible');
@@ -701,17 +516,14 @@
         const tiltCards = document.querySelectorAll('.tilt-card');
         const maxTilt = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--tilt-max-rotation')) || 8;
         const isTouchDeviceForTilt = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
-
         if (!isTouchDeviceForTilt) {
             tiltCards.forEach(card => {
                 card.addEventListener('mousemove', (e) => {
-                    const cardRect = card.getBoundingClientRect();
-                    const cardCenterX = cardRect.left + cardRect.width / 2;
-                    const cardCenterY = cardRect.top + cardRect.height / 2;
-                    const mouseX = e.clientX;
-                    const mouseY = e.clientY;
-                    const rotateY = maxTilt * ((mouseX - cardCenterX) / (cardRect.width / 2));
-                    const rotateX = -maxTilt * ((mouseY - cardCenterY) / (cardRect.height / 2));
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    const rotateY = maxTilt * (x / (rect.width / 2));
+                    const rotateX = -maxTilt * (y / (rect.height / 2));
                     card.style.transform = `translateY(-8px) perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
                     card.style.transition = 'transform 0.05s linear';
                 });
@@ -720,63 +532,97 @@
                     card.style.transform = 'translateY(-8px) perspective(1000px) rotateX(0deg) rotateY(0deg)';
                 });
             });
-        } else {
-            // console.log("Card tilt effect disabled on touch device.");
         }
 
-        // --- Tilt Scroll Functionality ---
+        // --- Gravity Tilt Scroll Functionality ---
         const tiltScrollToggleButton = document.getElementById('tilt-scroll-toggle');
         const tiltScrollStatus = document.getElementById('tilt-scroll-status');
-        let isTiltScrollEnabled = false;
-        let currentScrollSpeed = 0;
-        let animationFrameId = null;
 
-        const NEUTRAL_ZONE_DEGREES = 5; // 이 각도 내에서는 스크롤 안 함
-        const SCROLL_SENSITIVITY = 0.3; // 숫자가 클수록 민감하게 스크롤됨
+        // --- Physics Constants (조절 가능) ---
+        const NEUTRAL_ZONE_DEGREES = 3;   // 이 각도 내에서는 가속도 없음 (안정성)
+        const GRAVITY_SENSITIVITY = 15;   // 기울기에 따른 가속도 민감도 (클수록 빠르게 가속)
+        const DAMPING_FACTOR = 0.97;      // 감쇠 계수 (1에 가까울수록 천천히 멈춤, 0.9 ~ 0.99 추천)
+        const MAX_VELOCITY = 70;          // 최대 스크롤 속도 (픽셀/초 단위 느낌)
+        const PIXEL_SCALING = 1.0;        // 최종 스크롤 픽셀 조정 (필요시 값 조절)
+        const STOP_THRESHOLD = 0.1;       // 이 속도 이하일 때 완전히 멈춤
+
+        let isTiltScrollEnabled = false;
+        let currentAcceleration = 0;      // 현재 프레임의 가속도
+        let currentVelocity = 0;          // 현재 프레임의 속도
+        let lastTimestamp = null;         // 이전 프레임의 타임스탬프
+        let animationFrameId = null;
 
         function handleOrientation(event) {
             if (!isTiltScrollEnabled || event.beta === null) {
-                currentScrollSpeed = 0;
+                currentAcceleration = 0; // 활성화 안됐거나 데이터 없으면 가속도 0
                 return;
             }
 
-            const tiltForwardBackward = event.beta; // 앞뒤 기울기 (-180 ~ 180 또는 -90 ~ 90)
+            const tiltForwardBackward = event.beta; // 앞뒤 기울기
 
-            if (Math.abs(tiltForwardBackward) <= NEUTRAL_ZONE_DEGREES) {
-                currentScrollSpeed = 0;
-            } else {
-                // 중립 영역을 제외한 각도 계산
-                const effectiveTilt = tiltForwardBackward - Math.sign(tiltForwardBackward) * NEUTRAL_ZONE_DEGREES;
-                // 스크롤 속도 계산 (기울수록 빨라짐)
-                currentScrollSpeed = effectiveTilt * SCROLL_SENSITIVITY;
+            // 중립 영역(Neutral Zone) 계산
+            let effectiveTilt = 0;
+            if (Math.abs(tiltForwardBackward) > NEUTRAL_ZONE_DEGREES) {
+                effectiveTilt = tiltForwardBackward - Math.sign(tiltForwardBackward) * NEUTRAL_ZONE_DEGREES;
             }
-             // 상태 표시 (디버깅용)
-             // tiltScrollStatus.textContent = `활성 (Beta: ${tiltForwardBackward.toFixed(1)}, Speed: ${currentScrollSpeed.toFixed(1)})`;
+
+            // 기울기에 따라 가속도 계산 (기울수록 가속도 증가)
+            currentAcceleration = effectiveTilt * GRAVITY_SENSITIVITY;
+
+            // 상태 표시 (디버깅용)
+            // tiltScrollStatus.textContent = `활성 (Beta: ${tiltForwardBackward.toFixed(1)}, Accel: ${currentAcceleration.toFixed(1)}, Vel: ${currentVelocity.toFixed(1)})`;
         }
 
-        function scrollLoop() {
-            if (isTiltScrollEnabled && Math.abs(currentScrollSpeed) > 0.1) { // 작은 값은 무시
-                window.scrollBy(0, currentScrollSpeed);
+        function scrollLoop(timestamp) {
+            if (lastTimestamp === null) {
+                lastTimestamp = timestamp;
+                animationFrameId = requestAnimationFrame(scrollLoop);
+                return;
             }
-            // 계속해서 다음 프레임 요청
+
+            // 시간 변화량 계산 (초 단위)
+            const deltaTime = (timestamp - lastTimestamp) / 1000;
+            lastTimestamp = timestamp;
+
+            // --- 물리 계산 ---
+            if (isTiltScrollEnabled) {
+                // 1. 속도 업데이트: 현재 속도 += 가속도 * 시간변화량
+                currentVelocity += currentAcceleration * deltaTime;
+            } else {
+                 // 비활성화 시 가속도는 0으로 간주 (외부 힘 없음)
+                 currentAcceleration = 0;
+                 // 속도는 감쇠만 적용됨
+            }
+
+            // 2. 감쇠 적용: 속도 *= 감쇠계수 (매 프레임마다 속도 감소)
+            // deltaTime을 고려하여 프레임 속도에 덜 민감하게 만듦 (근사치)
+            currentVelocity *= Math.pow(DAMPING_FACTOR, deltaTime * 60); // 60fps 기준 보정
+
+            // 3. 최대 속도 제한
+            currentVelocity = Math.max(-MAX_VELOCITY, Math.min(MAX_VELOCITY, currentVelocity));
+
+            // 4. 거의 멈췄으면 완전히 멈춤
+            if (Math.abs(currentVelocity) < STOP_THRESHOLD && !isTiltScrollEnabled) {
+                currentVelocity = 0;
+            }
+
+            // --- 스크롤 적용 ---
+            if (Math.abs(currentVelocity) > 0.01) { // 아주 작은 움직임은 무시
+                const scrollAmount = currentVelocity * deltaTime * PIXEL_SCALING * 60; // deltaTime 고려 및 스케일링
+                window.scrollBy(0, scrollAmount);
+            }
+
+            // 다음 프레임 요청
             animationFrameId = requestAnimationFrame(scrollLoop);
         }
 
         function startTiltScroll() {
+            // iOS 13+ 권한 요청 또는 일반 시작
             if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-                // iOS 13+ 권한 요청
                 DeviceOrientationEvent.requestPermission()
                     .then(permissionState => {
                         if (permissionState === 'granted') {
-                            window.addEventListener('deviceorientation', handleOrientation);
-                            isTiltScrollEnabled = true;
-                            tiltScrollToggleButton.textContent = '기울기 스크롤 끄기';
-                            tiltScrollToggleButton.classList.add('active');
-                            tiltScrollStatus.textContent = '활성';
-                            // 스크롤 루프 시작
-                            if (!animationFrameId) {
-                                scrollLoop();
-                            }
+                            activateTiltScroll();
                         } else {
                             alert('기울기 센서 접근 권한이 거부되었습니다.');
                             tiltScrollStatus.textContent = '권한 없음';
@@ -788,34 +634,37 @@
                          tiltScrollStatus.textContent = '오류';
                     });
             } else if ('DeviceOrientationEvent' in window) {
-                // Non-iOS 13+ 또는 Android
-                window.addEventListener('deviceorientation', handleOrientation);
-                isTiltScrollEnabled = true;
-                tiltScrollToggleButton.textContent = '기울기 스크롤 끄기';
-                tiltScrollToggleButton.classList.add('active');
-                tiltScrollStatus.textContent = '활성';
-                 // 스크롤 루프 시작
-                if (!animationFrameId) {
-                    scrollLoop();
-                }
+                activateTiltScroll();
             } else {
                 alert('이 기기 또는 브라우저에서는 기울기 센서를 지원하지 않습니다.');
                 tiltScrollStatus.textContent = '미지원';
             }
         }
 
+        function activateTiltScroll() {
+             window.addEventListener('deviceorientation', handleOrientation);
+             isTiltScrollEnabled = true;
+             // currentVelocity = 0; // 활성화 시 속도 초기화 (선택적)
+             // currentAcceleration = 0; // 활성화 시 가속도 초기화
+             tiltScrollToggleButton.textContent = '기울기 스크롤 끄기';
+             tiltScrollToggleButton.classList.add('active');
+             tiltScrollStatus.textContent = '활성';
+             // 스크롤 루프가 이미 돌고 있으므로 별도 시작 필요 없음
+             if (!animationFrameId) { // 혹시 멈췄다면 다시 시작
+                 lastTimestamp = null; // 시간 초기화
+                 scrollLoop(performance.now());
+             }
+        }
+
+
         function stopTiltScroll() {
             window.removeEventListener('deviceorientation', handleOrientation);
             isTiltScrollEnabled = false;
-            currentScrollSpeed = 0; // 스크롤 즉시 멈춤
+            currentAcceleration = 0; // 외부 힘 제거
+            // 속도는 scrollLoop에서 자연스럽게 감쇠되어 멈춤
             tiltScrollToggleButton.textContent = '기울기 스크롤 켜기';
             tiltScrollToggleButton.classList.remove('active');
             tiltScrollStatus.textContent = '비활성';
-            // 스크롤 루프 중지 (선택적: 계속 실행해도 isTiltScrollEnabled가 false면 scrollBy 안 함)
-            // if (animationFrameId) {
-            //     cancelAnimationFrame(animationFrameId);
-            //     animationFrameId = null;
-            // }
         }
 
         tiltScrollToggleButton.addEventListener('click', () => {
@@ -826,8 +675,8 @@
             }
         });
 
-        // 페이지 로드 시 스크롤 루프 시작 (활성화될 때만 실제 스크롤)
-        scrollLoop();
+        // 페이지 로드 시 스크롤 루프 시작
+        requestAnimationFrame(scrollLoop);
 
     </script>
 
