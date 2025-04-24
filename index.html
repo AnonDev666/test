@@ -538,18 +538,12 @@
         const tiltScrollToggleButton = document.getElementById('tilt-scroll-toggle');
         const tiltScrollStatus = document.getElementById('tilt-scroll-status');
 
-                // --- Gravity Tilt Scroll Functionality ---
-        const tiltScrollToggleButton = document.getElementById('tilt-scroll-toggle');
-        const tiltScrollStatus = document.getElementById('tilt-scroll-status');
-
         // --- Physics Constants (조절 가능) ---
-        const NEUTRAL_ZONE_DEGREES = 3;   // 이 각도 내에서는 가속도 없음 (안정성)
-        // === 값 낮추기 ===
-        const GRAVITY_SENSITIVITY = 2;   // (기존 15) 기울기에 따른 가속도 민감도 (클수록 빠르게 가속)
-        const DAMPING_FACTOR = 0.96;      // (기존 0.97) 감쇠 계수 (1에 가까울수록 천천히 멈춤, 조금 더 마찰 증가)
-        // === 값 낮추기 ===
-        const MAX_VELOCITY = 13;          // (기존 70) 최대 스크롤 속도 (픽셀/초 단위 느낌)
-        const PIXEL_SCALING = 1.0;        // 최종 스크롤 픽셀 조정 (필요시 값 조절, 예: 0.8)
+        const NEUTRAL_ZONE_DEGREES = 5;   // 이 각도 내에서는 가속도 없음 (안정성)
+        const GRAVITY_SENSITIVITY = 5;   // 기울기에 따른 가속도 민감도 (클수록 빠르게 가속)
+        const DAMPING_FACTOR = 0.97;      // 감쇠 계수 (1에 가까울수록 천천히 멈춤, 0.9 ~ 0.99 추천)
+        const MAX_VELOCITY = 10;          // 최대 스크롤 속도 (픽셀/초 단위 느낌)
+        const PIXEL_SCALING = 1.0;        // 최종 스크롤 픽셀 조정 (필요시 값 조절)
         const STOP_THRESHOLD = 0.1;       // 이 속도 이하일 때 완전히 멈춤
 
         let isTiltScrollEnabled = false;
@@ -557,8 +551,6 @@
         let currentVelocity = 0;          // 현재 프레임의 속도
         let lastTimestamp = null;         // 이전 프레임의 타임스탬프
         let animationFrameId = null;
-
-        // ... (이하 handleOrientation, scrollLoop, startTiltScroll 등 함수는 동일) ...
 
         function handleOrientation(event) {
             if (!isTiltScrollEnabled || event.beta === null) {
@@ -575,8 +567,10 @@
             }
 
             // 기울기에 따라 가속도 계산 (기울수록 가속도 증가)
-            // GRAVITY_SENSITIVITY 값이 낮아져 가속도가 덜 증가함
             currentAcceleration = effectiveTilt * GRAVITY_SENSITIVITY;
+
+            // 상태 표시 (디버깅용)
+            // tiltScrollStatus.textContent = `활성 (Beta: ${tiltForwardBackward.toFixed(1)}, Accel: ${currentAcceleration.toFixed(1)}, Vel: ${currentVelocity.toFixed(1)})`;
         }
 
         function scrollLoop(timestamp) {
@@ -586,88 +580,40 @@
                 return;
             }
 
+            // 시간 변화량 계산 (초 단위)
             const deltaTime = (timestamp - lastTimestamp) / 1000;
             lastTimestamp = timestamp;
 
+            // --- 물리 계산 ---
             if (isTiltScrollEnabled) {
+                // 1. 속도 업데이트: 현재 속도 += 가속도 * 시간변화량
                 currentVelocity += currentAcceleration * deltaTime;
             } else {
+                 // 비활성화 시 가속도는 0으로 간주 (외부 힘 없음)
                  currentAcceleration = 0;
+                 // 속도는 감쇠만 적용됨
             }
 
-            // DAMPING_FACTOR 값이 약간 작아져 더 빨리 감속될 수 있음
-            currentVelocity *= Math.pow(DAMPING_FACTOR, deltaTime * 60);
+            // 2. 감쇠 적용: 속도 *= 감쇠계수 (매 프레임마다 속도 감소)
+            // deltaTime을 고려하여 프레임 속도에 덜 민감하게 만듦 (근사치)
+            currentVelocity *= Math.pow(DAMPING_FACTOR, deltaTime * 60); // 60fps 기준 보정
 
-            // MAX_VELOCITY 값이 낮아져 최대 속도가 제한됨
+            // 3. 최대 속도 제한
             currentVelocity = Math.max(-MAX_VELOCITY, Math.min(MAX_VELOCITY, currentVelocity));
 
+            // 4. 거의 멈췄으면 완전히 멈춤
             if (Math.abs(currentVelocity) < STOP_THRESHOLD && !isTiltScrollEnabled) {
                 currentVelocity = 0;
             }
 
-            if (Math.abs(currentVelocity) > 0.01) {
-                // PIXEL_SCALING 값으로 최종 스크롤 양 조절 가능
-                const scrollAmount = currentVelocity * deltaTime * PIXEL_SCALING * 60;
+            // --- 스크롤 적용 ---
+            if (Math.abs(currentVelocity) > 0.01) { // 아주 작은 움직임은 무시
+                const scrollAmount = currentVelocity * deltaTime * PIXEL_SCALING * 60; // deltaTime 고려 및 스케일링
                 window.scrollBy(0, scrollAmount);
             }
 
+            // 다음 프레임 요청
             animationFrameId = requestAnimationFrame(scrollLoop);
-        }
-
-        function startTiltScroll() {
-            if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-                DeviceOrientationEvent.requestPermission()
-                    .then(permissionState => {
-                        if (permissionState === 'granted') {
-                            activateTiltScroll();
-                        } else {
-                            alert('기울기 센서 접근 권한이 거부되었습니다.');
-                            tiltScrollStatus.textContent = '권한 없음';
-                        }
-                    })
-                    .catch(error => {
-                         console.error("Device Orientation permission request failed:", error);
-                         alert('기울기 센서 권한 요청 중 오류가 발생했습니다.');
-                         tiltScrollStatus.textContent = '오류';
-                    });
-            } else if ('DeviceOrientationEvent' in window) {
-                activateTiltScroll();
-            } else {
-                alert('이 기기 또는 브라우저에서는 기울기 센서를 지원하지 않습니다.');
-                tiltScrollStatus.textContent = '미지원';
-            }
-        }
-
-        function activateTiltScroll() {
-             window.addEventListener('deviceorientation', handleOrientation);
-             isTiltScrollEnabled = true;
-             tiltScrollToggleButton.textContent = '기울기 스크롤 끄기';
-             tiltScrollToggleButton.classList.add('active');
-             tiltScrollStatus.textContent = '활성';
-             if (!animationFrameId) {
-                 lastTimestamp = null;
-                 scrollLoop(performance.now());
-             }
-        }
-
-        function stopTiltScroll() {
-            window.removeEventListener('deviceorientation', handleOrientation);
-            isTiltScrollEnabled = false;
-            currentAcceleration = 0;
-            tiltScrollToggleButton.textContent = '기울기 스크롤 켜기';
-            tiltScrollToggleButton.classList.remove('active');
-            tiltScrollStatus.textContent = '비활성';
-        }
-
-        tiltScrollToggleButton.addEventListener('click', () => {
-            if (isTiltScrollEnabled) {
-                stopTiltScroll();
-            } else {
-                startTiltScroll();
-            }
-        });
-
-        requestAnimationFrame(scrollLoop);
         }
 
         function startTiltScroll() {
