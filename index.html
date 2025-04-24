@@ -539,10 +539,10 @@
         const tiltScrollStatus = document.getElementById('tilt-scroll-status');
 
         // --- Physics Constants (조절 가능) ---
-        const NEUTRAL_ZONE_DEGREES = 5;   // 이 각도 내에서는 가속도 없음 (안정성)
-        const GRAVITY_SENSITIVITY = 5;   // 기울기에 따른 가속도 민감도 (클수록 빠르게 가속)
+        const NEUTRAL_ZONE_DEGREES = 3;   // 이 각도 내에서는 가속도 없음 (안정성)
+        const GRAVITY_SENSITIVITY = 15;   // 기울기에 따른 가속도 민감도 (클수록 빠르게 가속)
         const DAMPING_FACTOR = 0.97;      // 감쇠 계수 (1에 가까울수록 천천히 멈춤, 0.9 ~ 0.99 추천)
-        const MAX_VELOCITY = 10;          // 최대 스크롤 속도 (픽셀/초 단위 느낌)
+        const MAX_VELOCITY = 15;          // 최대 스크롤 속도 (픽셀/초 단위 느낌)
         const PIXEL_SCALING = 1.0;        // 최종 스크롤 픽셀 조정 (필요시 값 조절)
         const STOP_THRESHOLD = 0.1;       // 이 속도 이하일 때 완전히 멈춤
 
